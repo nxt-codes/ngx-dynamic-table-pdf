@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MatMenuModule } from '@angular/material/menu'
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     CommonModule,
+    MatMenuModule,
     RouterOutlet
   ],
   templateUrl: './app.component.html',
