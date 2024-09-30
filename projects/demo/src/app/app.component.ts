@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu'
+import { NgxDynamicTablePdfComponent } from '../../../ngx-dynamic-table-pdf/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,8 @@ import { MatMenuModule } from '@angular/material/menu'
   imports: [
     CommonModule,
     MatMenuModule,
-    RouterOutlet
+    RouterOutlet,
+    NgxDynamicTablePdfComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass'

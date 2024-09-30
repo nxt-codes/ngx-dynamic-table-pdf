@@ -1,0 +1,50 @@
+<button class="w-10 h-10 px-1 text-light bg-light text-black rounded" (click)="show()" [matMenuTriggerFor]="menu">
+    <table-icons class="w-8 h-8" name="pdf-document"></table-icons>
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2c0 -.551 .223 -1.05 .584 -1.412" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2c.545 0 1.04 -.218 1.4 -.572" /><path d="M3 3l18 18" /></svg> -->
+</button>
+
+<div class="m-4">
+    <div class="flex flex-row divide-x p-2 w-40 items-center justify-between bg-accent text-white rounded cursor-pointer" [matMenuTriggerFor]="menu">
+        <span>Create PDF</span>
+        <div class="ml-2 pl-2 w-10 h-8 text-white">
+            <table-icons class="w-8 h-8" name="settings"></table-icons>
+        </div>
+    </div>
+</div>
+
+
+<mat-menu #menu="matMenu" class="p-2">
+    <div class="flex flex-col divide-y" clickStopPropagation>
+        <div class="">
+            upper
+        </div>
+        <div class="">
+            <div class="nxt_checkbox flex items-center justify-between w-full" *ngFor="let item of items">
+                <div class="flex items-center mr-2">
+                    <div class="my-2 mr-2 bg-white dark:bg-gray-800 rounded-sm w-5 h-5 flex flex-shrink-0 justify-center items-center relative">
+                        <input type="checkbox" class="nxt_checkbox_field w-full h-full focus:outline-none cursor-pointer" />
+                    </div>
+                    <label class="nxt_checkbox_label text-sm leading-none">{{ item }}</label>
+                </div>
+                <input type="color" id="head" name="head" value="#e66465" />
+            </div>
+        </div>
+    </div>
+    <!-- <button mat-menu-item class="!flex items-center">
+        <div class="flex flex-row">
+            <div class=" h-6 w-6 fill-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            </div>
+            <span class="ml-4">Refresh</span>
+        </div>
+    </button>
+    <button mat-menu-item class="!flex items-center">
+        <div class="flex flex-row">
+            <div class=" h-6 w-6 fill-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+            </div>
+            <span class="ml-4">Reload</span>
+        </div>
+    </button> -->
+
+</mat-menu>
