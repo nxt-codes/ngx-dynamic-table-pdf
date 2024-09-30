@@ -22,4 +22,8 @@ export class NgxDynamicTablePdfComponent {
   show() {
     console.log('show')
   }
+
+  create() {
+    console.log('create')
+  }
 }
