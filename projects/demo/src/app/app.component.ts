@@ -25,9 +25,7 @@ import { Observable, of } from 'rxjs';
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass'
 })
-export class AppComponent implements OnInit {
-  // items: any = ['id', 'name', 'date', 'ort', 'checked', 'description']
-  
+export class AppComponent implements OnInit { 
   daten: any = [
     { id: '1', name: 'Tim', date: '01.01.2024 00:00:59', ort: 'Berlin', checked: false, description: 'Test1' },
     { id: '2', name: 'Tom', date: '01.01.2023 00:00:59', ort: 'Hamburg', checked: false, description: 'Test2' },
@@ -38,14 +36,13 @@ export class AppComponent implements OnInit {
   ]
 
   dataSource: any
-  columnNames: any[] = ['checkbox', 'name', 'color']
-  @ViewChild(MatSort) sort!: MatSort
+  // @ViewChild(MatSort) sort!: MatSort
   
   constructor() {
     this.dataSource = new MatTableDataSource([])
   }
   ngOnInit(): void {
-    this.dataSource.sort = this.sort
+    // this.dataSource.sort = this.sort
     this.dataSource.data = this.createData(Object.keys(this.daten[0]))
   }
 
@@ -54,7 +51,6 @@ export class AppComponent implements OnInit {
     columns.forEach((item: any) => {
       data.push({ checked: true, name: item, color: '#000000' })
     })
-    console.log(data)
     return data
   }
 
