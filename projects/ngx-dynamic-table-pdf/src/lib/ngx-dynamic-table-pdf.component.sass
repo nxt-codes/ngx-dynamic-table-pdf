@@ -1,0 +1,71 @@
+.wrapper 
+    position: relative
+    perspective: 1000px
+
+.split 
+    display: flex
+    align-items: center
+    justify-content: space-between
+    height: 3.5rem
+    border: 0
+    font-size: 0.875rem
+    background: #17181b
+    color: #f7f7f7
+    cursor: pointer
+
+.split-button 
+    display: grid
+    place-items: center
+    width: 3.5rem
+    height: inherit
+    padding: 0
+    border: 0
+    font-size: 0.75rem
+    background: #292c38
+    color: #f7f7f7
+
+.uil.close 
+    font-size: 1.5rem
+    transition: all 0.35s
+
+.button 
+    display: flex
+    align-items: center
+    gap: 0.75rem
+    width: 12rem
+    height: 3rem
+    padding-left: 1rem
+    border: 0
+    font-family: Poppins
+    text-align: left
+    color: #f7f7f7
+    background: transparent
+    outline: none
+
+.button-icon 
+    font-size: 1.15rem
+
+.menu 
+    position: absolute
+    z-index: 1
+    top: 3.5rem
+    right: 0
+    display: block
+    width: 100%
+    padding: 0.25rem 0 1rem
+    background: #292c38
+    opacity: 0
+    visibility: hidden
+    backface-visibility: hidden
+    transform: rotate3d(1, 0, 0, -90deg)
+    transform-origin: 0% 0%
+    transition-property: transform, opacity, visibility
+    transition-duration: 0.35s
+
+.wrapper:hover .menu 
+    visibility: visible
+    opacity: 1
+    transform: rotate3d(0, 0, 0, 0)
+
+.wrapper:hover .close 
+    transform: rotate(-45deg)

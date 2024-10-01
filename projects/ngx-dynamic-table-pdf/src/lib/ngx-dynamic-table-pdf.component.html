@@ -1,6 +1,5 @@
-<button class="w-10 h-10 px-1 text-light bg-light text-black rounded" (click)="show()" [matMenuTriggerFor]="menu">
+<!-- <button class="w-10 h-10 px-1 text-light bg-light text-black rounded" (click)="show()" [matMenuTriggerFor]="menu">
     <table-icons class="w-8 h-8" name="pdf-document"></table-icons>
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 8v-2c0 -.551 .223 -1.05 .584 -1.412" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2c.545 0 1.04 -.218 1.4 -.572" /><path d="M3 3l18 18" /></svg> -->
 </button>
 
 <div class="m-4">
@@ -33,21 +32,63 @@
     <div class="mt-2 p-2 bg-accent text-white rounded cursor-pointer" (click)="create()">
         erstellen
     </div>
-    <!-- <button mat-menu-item class="!flex items-center">
-        <div class="flex flex-row">
-            <div class=" h-6 w-6 fill-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            </div>
-            <span class="ml-4">Refresh</span>
-        </div>
-    </button>
-    <button mat-menu-item class="!flex items-center">
-        <div class="flex flex-row">
-            <div class=" h-6 w-6 fill-dark">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-            </div>
-            <span class="ml-4">Reload</span>
-        </div>
-    </button> -->
-
 </mat-menu>
+
+<div class="wrapper">
+    <div class="split">
+        <button class="button">
+          <span class="button-icon uil uil-upload"></span>
+          Upload File
+        </button>
+    
+        <button class="split-button">
+          <span class="uil uil-plus close"></span>
+        </button>
+    
+        <div class="menu">
+          <button class="button">
+            <span class="button-icon uil uil-cog"></span>
+            Advanced Settings
+          </button>
+          <button class="button">
+            <span class="button-icon uil uil-sliders-v-alt"></span>
+            Preferences
+          </button>
+        </div>
+    </div>
+</div> -->
+
+<button class="w-16 h-16 p-4 text-dark" (click)="settingsDrawer.toggle()">
+    <table-icons class="w-8 h-8 stroke-1 stroke-current" name="pdf-document"></table-icons>
+</button>
+
+<drawer class="w-screen min-w-screen sm:w-96 sm:min-w-96 z-110" fixed [mode]="'over'" [name]="'pdfPrint'" [position]="'right'" #settingsDrawer>
+    <div class="flex flex-col w-full overflow-auto bg-primary border-l border-borderline">
+        <header class="h-16 mx-4 flex items-center justify-between content-center border-b border-borderline text-dark">
+            <!-- <button class="sm:w-0 w-8 h-8 focus:outline-none cursor-pointer" (click)="settingsDrawer.close()">
+                <icons class="stroke-1 stroke-current" name="arrow-left"></icons>
+            </button> -->
+            <div class="w-8 h-8">
+                <table-icons class="stroke-1 stroke-current" name="pdf-document"></table-icons>
+            </div>
+            <span class="ml-3 text-2xl font-semibold">
+                Einstellungen
+            </span>
+            <button class="w-8 h-8 focus:outline-none cursor-pointer" (click)="settingsDrawer.close()">
+                <table-icons class="stroke-1 stroke-current" name="x"></table-icons>
+            </button>
+        </header>
+        <div class="mx-4 mt-8 flex-1">
+            <h2 class="my-2 text-lg">Spalten auswählen:</h2>
+            <ng-content></ng-content>
+        </div>
+        <footer class="flex flex-none h-16 w-full py-2 px-4 justify-between bg-secondary border-t border-borderline">
+            <ng-container *ngTemplateOutlet="toolbar"></ng-container>
+        </footer>
+    </div>
+</drawer>
+
+<ng-template #toolbar>
+    <button (click)="settingsDrawer.close()" type="button" class="p-2 mr-3 bg-gray-800 text-white rounded">Abbrechen</button>
+    <button (click)="print()" type="button" class="p-2 mr-3 bg-gray-800 text-black text-white rounded">PDF erstellen</button>
+</ng-template>

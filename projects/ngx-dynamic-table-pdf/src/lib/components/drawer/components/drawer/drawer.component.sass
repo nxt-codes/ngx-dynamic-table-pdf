@@ -1,0 +1,73 @@
+drawer
+    @apply relative flex flex-col w-24
+    flex: 1 1 auto
+    z-index: 110
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .35)
+
+    &.drawer-animations-enabled
+        transition-duration: 300ms
+        transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1)
+        transition-property: visibility, margin-left, margin-right, transform, width, max-width, min-width
+
+        .drawer-content
+            transition-duration: 300ms
+            transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1)
+            transition-property: width, max-width, min-width
+
+    &.drawer-mode-over
+        @apply absolute top-0 bottom-0
+
+        &.drawer-fixed
+            @apply fixed
+
+    &.drawer-position-left
+
+        &.drawer-mode-side
+            @apply -ml-24
+
+            &.drawer-opened
+                @apply ml-0
+
+        &.drawer-mode-over
+            @apply left-0
+            transform: translate3d(-100%, 0, 0)
+
+            &.drawer-opened
+                transform: translate3d(0, 0, 0)
+
+        .drawer-content
+            @apply left-0
+
+    &.drawer-position-right
+
+        &.drawer-mode-side
+            @apply -mr-24
+
+            &.drawer-opened
+                @apply mr-0
+
+        &.drawer-mode-over
+            @apply right-0
+            transform: translate3d(100%, 0, 0)
+
+            &.drawer-opened
+                transform: translate3d(0, 0, 0)
+
+        .drawer-content
+            @apply right-0
+
+    .drawer-content
+        @apply absolute flex h-full w-full top-0 bottom-0 overflow-hidden
+        flex: 1 1 auto
+
+.drawer-overlay
+    @apply absolute top-0 right-0 bottom-0 left-0
+    z-index: 100
+    opacity: 1
+    background-color: rgba(0, 0, 0, 0.6)
+
+    &.drawer-overlay-fixed
+        @apply fixed
+
+    &.drawer-overlay-transparent
+        @apply bg-transparent
