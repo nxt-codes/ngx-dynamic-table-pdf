@@ -27,8 +27,8 @@ export class NgxDynamicTablePdfComponent implements OnInit {
   items: any = ['id', 'name', 'date', 'ort', 'checked', 'description']
 
   private pdfMake: any
-  pdfDocGenerator: any
-  public pdf = ''//'./assets/test.pdf'
+  // pdfDocGenerator: any
+  // public pdf = ''//'./assets/test.pdf'
 
   constructor() {
     this.pdfMake = pdfMake
@@ -53,5 +53,14 @@ export class NgxDynamicTablePdfComponent implements OnInit {
       ]
     }
     pdfMake.createPdf(dd).download()
+  }
+
+  open() {
+    const dd = {
+      content: [
+        { text: 'Dokumentation', style: 'header' }
+      ]
+    }
+    pdfMake.createPdf(dd).open()
   }
 }

@@ -90,5 +90,14 @@
 
 <ng-template #toolbar>
     <button (click)="settingsDrawer.close()" type="button" class="p-2 mr-3 bg-gray-800 text-white rounded">Abbrechen</button>
-    <button (click)="print()" type="button" class="p-2 mr-3 bg-gray-800 text-black text-white rounded">PDF erstellen</button>
+    <!-- <button (click)="print()" type="button" class="p-2 mr-3 bg-gray-800 text-black text-white rounded">PDF erstellen</button> -->
+    <div class="flex flex-row divide-x p-2 w-48 items-center justify-between bg-accent text-white rounded cursor-pointer">
+        <span>Create PDF</span>
+        <div class="ml-2 pl-2 w-10 h-8 text-white" (click)="open()">
+            <table-icons class="w-8 h-8" name="file-stack"></table-icons>
+        </div>
+        <div class="ml-2 pl-2 w-10 h-8 text-white" (clock)="print()">
+            <table-icons class="w-8 h-8" name="file-download"></table-icons>
+        </div>
+    </div>
 </ng-template>
