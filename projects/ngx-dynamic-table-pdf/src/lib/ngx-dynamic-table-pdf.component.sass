@@ -1,3 +1,20 @@
+.mat-column-checkbox
+    @apply m-0 p-0 w-8 #{!important}
+
+.mat-column-sortrow
+    @apply m-0 p-0 w-6 #{!important}    
+
+input[type="color"]
+    @apply h-6 w-6 bg-transparent border-none cursor-pointer rounded-lg
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+
+    &::-webkit-color-swatch
+        @apply border-none rounded
+    &::-moz-color-swatch
+        @apply border-none rounded
+
 .wrapper 
     position: relative
     perspective: 1000px
