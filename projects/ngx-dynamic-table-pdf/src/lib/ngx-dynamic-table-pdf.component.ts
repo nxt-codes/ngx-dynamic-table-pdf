@@ -263,12 +263,23 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
    */
   check(row: any) {
     // this.action.emit({ row, action: TableActionEnum.CHECK })
+    this.dataSource.data.find((item: any) => item.name == row.name).checked = !row.checked
   }
   /**
    * Emits a corresponding event to check all rows.
    */
   checkAll() {
-    this.dataSource.data.forEach((row: any) => row.checked = !row.checked)
+    switch (true) {
+      case this.dataSource.data.every((row: any) => row.checked):
+        this.dataSource.data.forEach((row: any) => row.checked = false)
+        break
+      case this.dataSource.data.every((row: any) => !row.checked):
+        this.dataSource.data.forEach((row: any) => row.checked = true)
+        break
+      default:
+        this.dataSource.data.forEach((row: any) => row.checked = true)
+        break
+    }
   }
 
   isAllChecked(): boolean {
@@ -276,11 +287,15 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   }
 
   changeColor(el: any, value: any) {
-    console.log(el, value)
-    console.log(this.dataSource.data)
     let cleared = this.dataSource.data.filter((item: any) => item.name != el.name)
-    this.dataSource.data = [...cleared, { sort: el.sort, checked: el.checked, name: el.name, color: value }] // .push({ sort: el.sort, checked: el.checked, name: el.name, color: value })
-    console.log(this.dataSource.data)
+    this.dataSource.data = [...cleared, { sort: el.sort, checked: el.checked, name: el.name, color: value }]
+    this.sortData('sort')
+  }
+  sortData(property: string = 'sort') {
+    this.dataSource.data.sort((a: any, b: any) => {
+      return a[property] - b[property]
+    })
+    this.dataSource._updateChangeSubscription()
   }
 
   open() {
