@@ -1,8 +1,44 @@
 .mat-column-checkbox
     @apply m-0 p-0 w-8 #{!important}
 
-.mat-column-sortrow
-    @apply m-0 p-0 w-6 #{!important}    
+// .mat-column-sortrow
+//     @apply m-0 p-0 w-6 #{!important} 
+
+.mat-column-color
+    @apply w-6 #{!important}
+
+.mat-column-sort
+    @apply w-6
+
+::ng-deep .mat-column-color
+    .mat-sort-header-arrow[style]
+        .mat-sort-header-stem
+            display: none
+            
+        .mat-sort-header-indicator
+            opacity: 1
+            color: black
+            font-weight: bold
+
+            .mat-sort-header-pointer-left,
+            .mat-sort-header-pointer-right,
+            .mat-sort-header-pointer-middle
+                display: none
+
+::ng-deep .mat-column-sort
+    .mat-sort-header-arrow[style]
+        .mat-sort-header-stem
+            display: none
+
+        .mat-sort-header-indicator
+            opacity: 1
+            color: black
+            font-weight: bold
+
+            .mat-sort-header-pointer-left,
+            .mat-sort-header-pointer-right,
+            .mat-sort-header-pointer-middle
+                display: none
 
 input[type="color"]
     @apply h-6 w-6 bg-transparent border-none cursor-pointer rounded-lg
