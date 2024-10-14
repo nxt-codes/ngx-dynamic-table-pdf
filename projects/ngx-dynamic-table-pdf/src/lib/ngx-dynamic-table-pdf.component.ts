@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TableIconsComponent } from './components/icons/table-icons.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,8 @@ import { DrawerComponent } from './components/drawer/components/drawer/drawer.co
 import * as pdfMake from 'pdfmake/build/pdfmake'
 import * as pdfFonts from "pdfmake/build/vfs_fonts"
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { rangeFill } from './utils';
+import { MatSortModule, MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'ngx-dynamic-table-pdf',
@@ -17,13 +19,14 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
     ClickStopPropagationDirective,
     CommonModule,
     MatMenuModule,
+    MatSortModule,
     MatTableModule,
     TableIconsComponent
   ],
   templateUrl: './ngx-dynamic-table-pdf.component.html',
   styleUrls: ['./ngx-dynamic-table-pdf.component.sass']
 })
-export class NgxDynamicTablePdfComponent implements OnInit {
+export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   @Input() data: any = []
   
   // items: any = ['id', 'name', 'date', 'ort', 'checked', 'description']
@@ -35,6 +38,7 @@ export class NgxDynamicTablePdfComponent implements OnInit {
   // public pdf = ''//'./assets/test.pdf'
 
   // table
+  @ViewChild(MatSort) sort!: MatSort
   dataSource: any
 
   constructor() {
@@ -45,23 +49,41 @@ export class NgxDynamicTablePdfComponent implements OnInit {
   ngOnInit(): void {
     this.pdfMake.vfs = pdfFonts.pdfMake.vfs
     this.columns = Object.keys(this.data[0])
+    
     this.dataSource.data = this.createData(this.columns)
   }
 
-  prepareTable(): any {
-    console.log(this.data)
-    let col = [12, 40, 40, 20, '*', 20, '*', 20, '*'] // Object.keys(this.data[0])
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort
+  }
 
+  prepareTable(): any {
+    console.log('prepare', this.dataSource.data)
+    console.log(this.data)
+    // let col = [12, 40, 40, 20, '*', 20, '*', 20, '*']
+    let col_header = Object.keys(this.data[0])
+    let width = rangeFill(col_header.length, '*')
+    let header = col_header.map((c: string) => { 
+      return { text: c, style: 'tableHeader' }
+    })
+    let rows: any[] = []
+    this.data.forEach((item: any) => {
+      let row: any[] = []
+      Object.keys(item).forEach((key: string) => {
+        row.push({ text: item[key], style: 'tableRow', color: '#BC1010' })
+      })
+      rows.push(row)
+    })
+    
     return {
       style: 'default',
       color: '#444',
       table: {
-        widths: col,
-        headerRows: 2,
+        widths: width,
+        headerRows: 1,
         body: [
-          [{rowSpan: 2, text: ''}, {text: 'Uhrzeit', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}, {text: 'Bootsführer', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}, {text: 'Bootssteuerer', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}, {text: 'Bootsgast', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}],
-          ['', {text: 'Beginn', alignment: 'center'}, {text: 'Ende', alignment: 'center'}, {text: 'R*', alignment: 'center'},{text: 'Unterschrift', alignment: 'center'},{text: 'R/V', alignment: 'center'},{text: 'Name', alignment: 'center'},{text: 'R/V', alignment: 'center'},{text: 'Name', alignment: 'center'}],
-          ['1.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3']
+          header,
+          ...rows
         ]
       }
     }
@@ -229,8 +251,8 @@ export class NgxDynamicTablePdfComponent implements OnInit {
   // table
   createData(columns: any[]): any[] {
     let data: any[] = []
-    columns.forEach((item: any) => {
-      data.push({ checked: true, name: item, color: '#000000' })
+    columns.forEach((item: any, index: number) => {
+      data.push({ sort: index, checked: true, name: item, color: '#000000' })
     })
     return data
   }
@@ -251,6 +273,14 @@ export class NgxDynamicTablePdfComponent implements OnInit {
 
   isAllChecked(): boolean {
     return this.dataSource.data.every((row: any) => row.checked)
+  }
+
+  changeColor(el: any, value: any) {
+    console.log(el, value)
+    console.log(this.dataSource.data)
+    let cleared = this.dataSource.data.filter((item: any) => item.name != el.name)
+    this.dataSource.data = [...cleared, { sort: el.sort, checked: el.checked, name: el.name, color: value }] // .push({ sort: el.sort, checked: el.checked, name: el.name, color: value })
+    console.log(this.dataSource.data)
   }
 
   open() {
