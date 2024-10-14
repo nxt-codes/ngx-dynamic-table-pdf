@@ -221,29 +221,8 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
       },
       content: [
         { text: 'Streifendokumentation', style: 'header' },
-
         {text: 'I. Übernahmevermerk und Besatzung', style: 'header'},
         prepare.table
-        // {
-        //   style: 'default',
-        //   color: '#444',
-        //   table: {
-        //     widths: [12, 40, 40, 20, '*', 20, '*', 20, '*'],
-        //     headerRows: 2,
-        //     body: [
-        //       [{rowSpan: 2, text: ''}, {text: 'Uhrzeit', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}, {text: 'Bootsführer', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}, {text: 'Bootssteuerer', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}, {text: 'Bootsgast', style: 'tableHeader', colSpan: 2, alignment: 'center'}, {}],
-        //       ['', {text: 'Beginn', alignment: 'center'}, {text: 'Ende', alignment: 'center'}, {text: 'R*', alignment: 'center'},{text: 'Unterschrift', alignment: 'center'},{text: 'R/V', alignment: 'center'},{text: 'Name', alignment: 'center'},{text: 'R/V', alignment: 'center'},{text: 'Name', alignment: 'center'}],
-        //       ['1.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['2.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['3.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['4.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['5.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['6.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['7.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3'],
-        //       ['8.', 'value1', 'value2', 'R1', 'value3', 'R2', 'value2', 'R3', 'value3']
-        //     ]
-        //   }
-        // },
       ]
     }
   }
@@ -252,7 +231,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   createData(columns: any[]): any[] {
     let data: any[] = []
     columns.forEach((item: any, index: number) => {
-      data.push({ sort: index, checked: true, name: item, color: '#000000' })
+      data.push({ sort: index, checked: true, name: item, id: item, color: '#000000' })
     })
     return data
   }
@@ -288,7 +267,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   changeColor(el: any, value: any) {
     let cleared = this.dataSource.data.filter((item: any) => item.name != el.name)
-    this.dataSource.data = [...cleared, { sort: el.sort, checked: el.checked, name: el.name, color: value }]
+    this.dataSource.data = [...cleared, { sort: el.sort, checked: el.checked, name: el.name, id: el.id, color: value }]
     this.sortData('sort')
   }
   sortData(property: string = 'sort') {
