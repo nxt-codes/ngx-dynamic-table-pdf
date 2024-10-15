@@ -58,19 +58,33 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   }
 
   prepareTable(): any {
-    console.log('prepare', this.dataSource.data)
-    console.log(this.data)
-    // let col = [12, 40, 40, 20, '*', 20, '*', 20, '*']
-    let col_header = Object.keys(this.data[0])
-    let width = rangeFill(col_header.length, '*')
-    let header = col_header.map((c: string) => { 
+    // console.log('prepare', this.dataSource.data)
+    let col: any[] = this.dataSource.data.filter((item: any) => item.checked)
+    let col_name: string[] = col.map((item: any) => item.name)
+    // console.log('col', col.map((item: any) => item.name))
+    // let col_header: string[] = this.dataSource.data.map((item: any) => {
+    //   if (item.checked) return item.name
+    // }).filter((item: any) => item !== undefined)
+    
+    // let col_header = Object.keys(this.data[0])
+    let width = rangeFill(col_name.length, '*')
+    console.log('header', col_name)
+    let table_header = col_name.map((c: string) => {
       return { text: c, style: 'tableHeader' }
     })
+    console.log('header', table_header)
+
     let rows: any[] = []
     this.data.forEach((item: any) => {
+      console.log('item', item)
       let row: any[] = []
-      Object.keys(item).forEach((key: string) => {
-        row.push({ text: item[key], style: 'tableRow', color: '#BC1010' })
+      col.forEach((c: any) => {
+        // console.log('key', key)
+        // console.log('is', col_header.indexOf(key))
+        // if (col_header.indexOf(key)) 
+        //   row.push({ text: item[key], style: 'tableRow', color: '#BC1010' })
+        //   console.log('row', row)
+        row.push({ text: item[c.name], style: 'tableRow', color: '#BC1010' })
       })
       rows.push(row)
     })
@@ -82,7 +96,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
         widths: width,
         headerRows: 1,
         body: [
-          header,
+          table_header,
           ...rows
         ]
       }
@@ -275,6 +289,10 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
       return a[property] - b[property]
     })
     this.dataSource._updateChangeSubscription()
+  }
+
+  addFilter() {
+    console.log('addFilter')
   }
 
   open() {
