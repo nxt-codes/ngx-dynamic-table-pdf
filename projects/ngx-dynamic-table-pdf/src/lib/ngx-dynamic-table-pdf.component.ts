@@ -79,12 +79,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
       console.log('item', item)
       let row: any[] = []
       col.forEach((c: any) => {
-        // console.log('key', key)
-        // console.log('is', col_header.indexOf(key))
-        // if (col_header.indexOf(key)) 
-        //   row.push({ text: item[key], style: 'tableRow', color: '#BC1010' })
-        //   console.log('row', row)
-        row.push({ text: item[c.name], style: 'tableRow', color: '#BC1010' })
+        row.push({ text: item[c.name], style: 'tableRow', color: c.color })
       })
       rows.push(row)
     })
