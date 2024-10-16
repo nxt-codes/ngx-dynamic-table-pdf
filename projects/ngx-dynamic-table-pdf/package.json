@@ -1,7 +1,7 @@
 {
-  "name": "ngx-dynamic-table-pdf",
+  "name": "@nxt-codes/ngx-dynamic-table-pdf",
   "version": "0.0.1",
-  "description": "Adds a pdf-print to a ngx-dynamic-table.",
+  "description": "Adds a pdf-print-button to a ngx-dynamic-table.",
   "license": "MIT",
   "author": {
     "name": "Christoph Huschenhoefer",

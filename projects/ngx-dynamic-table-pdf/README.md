@@ -2,6 +2,9 @@
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.0.
 
+## Demo
+[Demo](https://nxt-codes.github.io/ngx-dynamic-table-pdf/)
+
 ## Code scaffolding
 
 Run `ng generate component component-name --project ngx-dynamic-table-pdf` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-dynamic-table-pdf`.
