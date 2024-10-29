@@ -10,17 +10,20 @@ import * as pdfFonts from "pdfmake/build/vfs_fonts"
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { rangeFill } from './utils';
 import { MatSortModule, MatSort } from '@angular/material/sort';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'ngx-dynamic-table-pdf',
   standalone: true,
   imports: [
-    DrawerComponent,
     ClickStopPropagationDirective,
     CommonModule,
+    DrawerComponent,
+    FormsModule,
     MatMenuModule,
     MatSortModule,
     MatTableModule,
+    ReactiveFormsModule,
     TableIconsComponent
   ],
   templateUrl: './ngx-dynamic-table-pdf.component.html',
@@ -41,7 +44,10 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort
   dataSource: any
 
-  constructor() {
+  // filter
+  filterForm!: FormGroup
+
+  constructor(private _fb: FormBuilder) {
     this.pdfMake = pdfMake
     this.dataSource = new MatTableDataSource([])
   }
@@ -51,6 +57,33 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     this.columns = Object.keys(this.data[0])
     
     this.dataSource.data = this.createData(this.columns)
+
+    // filter
+    let form: any = {} // Obj
+    let filterStore: { [key: string]: FormArray } = {}
+
+    let columns = [Object.keys(this.data[0])[0]]
+    console.log('columns', columns)
+    columns.forEach((item: any) => {
+      console.log('item', item)
+      form = Object.assign(form, { [item]: this._fb.array([])})
+      // filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get('id')})
+    })
+    columns.forEach((item: any) => {
+      form[item].push(this._fb.control('firstName'))
+    })
+    console.log('new form', form)
+    
+    this.filterForm = this._fb.group(form)
+
+    columns.forEach((item: any) => {
+      console.log('item', item)
+      // form = Object.assign(form, { [item]: this._fb.array([])})
+      filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get('id')})
+    })
+    // let idArray = <FormArray>this.filterForm.get('id')
+    // console.log('idArray', idArray)
+    console.log('new filterStore', filterStore)
   }
 
   ngAfterViewInit(): void {

@@ -20,6 +20,11 @@
         </header>
         <div class="mx-4 mt-8 flex-1">
             <h2 class="my-2 text-lg">Filter:</h2>
+            <form [formGroup]="filterForm">
+                <div formArrayName="id">
+                    <input formControlName="firstName">
+                </div>
+            </form>
             <div class="w-10 h-10 p-1 bg-white rounded-lg cursor-pointer" (click)="addFilter()">
                 <table-icons name="add"></table-icons>
             </div>
