@@ -11,6 +11,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { rangeFill } from './utils';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'ngx-dynamic-table-pdf',
@@ -21,6 +22,7 @@ import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } f
     DrawerComponent,
     FormsModule,
     MatMenuModule,
+    MatSelectModule,
     MatSortModule,
     MatTableModule,
     ReactiveFormsModule,
@@ -45,11 +47,17 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   dataSource: any
 
   // filter
+  showFilter: boolean = false
+  addFilterForm!: FormGroup
   filterForm!: FormGroup
 
   constructor(private _fb: FormBuilder) {
     this.pdfMake = pdfMake
     this.dataSource = new MatTableDataSource([])
+
+    this.addFilterForm = this._fb.group({
+      col: ['']
+    })
   }
 
   ngOnInit(): void {
@@ -62,33 +70,48 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     let form: any = {} // Obj
     let filterStore: { [key: string]: FormArray } = {}
 
-    let columns = [Object.keys(this.data[0])[0]]
-    console.log('columns', columns)
+    let columns = this.getColumns()
     columns.forEach((item: any) => {
-      console.log('item', item)
       form = Object.assign(form, { [item]: this._fb.array([])})
       // filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get('id')})
     })
     columns.forEach((item: any) => {
-      form[item].push(this._fb.control('firstName'))
+      // form[item].push(this._fb.control('firstname'))
     })
-    console.log('new form', form)
     
     this.filterForm = this._fb.group(form)
 
     columns.forEach((item: any) => {
-      console.log('item', item)
-      // form = Object.assign(form, { [item]: this._fb.array([])})
-      filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get('id')})
+      filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get(item)})
     })
+
+    this.addFilterForm.patchValue({ col: this.getColumns()[0] })
+
+
     // let idArray = <FormArray>this.filterForm.get('id')
     // console.log('idArray', idArray)
     console.log('new filterStore', filterStore)
+    console.log('filterFormValue', this.filterForm.value)
+
+    this.filterForm.valueChanges
+    .subscribe({
+      next: (data) => {
+        console.log('formdata', data)
+      },
+      complete: () => {
+        console.log('complete')
+      }
+    })
   }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort
   }
+
+  getColumns(): string[] {
+    return Object.keys(this.data[0])
+  }
+
 
   prepareTable(): any {
     // console.log('prepare', this.dataSource.data)
@@ -310,7 +333,8 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     this.dataSource._updateChangeSubscription()
   }
 
-  addFilter() {
+  toggleFilter() {
+    this.showFilter = !this.showFilter
     console.log('addFilter')
   }
 
@@ -320,5 +344,12 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   print() {
     pdfMake.createPdf(this.createPdf()).download()
+  }
+
+  generateGUID(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: any) => {
+      var rnd = Math.random() * 16 | 0, v = c === 'x' ? rnd : (rnd & 0x3 | 0x8)
+      return v.toString(16)
+    });
   }
 }

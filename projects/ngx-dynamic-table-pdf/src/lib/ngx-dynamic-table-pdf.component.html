@@ -21,13 +21,26 @@
         <div class="mx-4 mt-8 flex-1">
             <h2 class="my-2 text-lg">Filter:</h2>
             <form [formGroup]="filterForm">
-                <div formArrayName="id">
-                    <input formControlName="firstName">
+                <div *ngFor="let col of getColumns()" [formArrayName]="col">
+                    <div *ngFor="let row; let index = index" formGroupName="0">
+                        <input formControlName="filter">
+                    </div>
                 </div>
             </form>
-            <div class="w-10 h-10 p-1 bg-white rounded-lg cursor-pointer" (click)="addFilter()">
-                <table-icons name="add"></table-icons>
-            </div>
+            <form [formGroup]="addFilterForm">
+                <div class="relative flex flex-row-reverse min-w-12 h-12 p-1 items-center bg-white rounded-lg cursor-pointer transition-all duration-300 ease-out" [ngClass]="showFilter ? 'w-full' : 'w-10'">
+                    <div class="relative right-0 w-10 h-10" (click)="toggleFilter()">
+                        <table-icons name="add"></table-icons>
+                    </div>
+                    <div *ngIf="showFilter" class="grow p-2 border-r border-gray-500 duration-300">
+                        <mat-select formControlName="col" id="col" class="nxt_select_input" [(value)]="getColumns()[0]">
+                            <mat-option *ngFor="let option of getColumns()" [value]="option">{{ option }}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+            </form>
+            {{ getColumns()[0] }}
+
             <h2 class="my-2 text-lg">Spalten auswählen:</h2>
             <table mat-table [dataSource]="dataSource" matSort>
                 <ng-container matColumnDef="checkbox">
