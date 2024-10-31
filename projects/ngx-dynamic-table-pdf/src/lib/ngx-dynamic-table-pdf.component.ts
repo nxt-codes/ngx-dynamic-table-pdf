@@ -73,10 +73,6 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     let columns = this.getColumns()
     columns.forEach((item: any) => {
       form = Object.assign(form, { [item]: this._fb.array([])})
-      // filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get('id')})
-    })
-    columns.forEach((item: any) => {
-      // form[item].push(this._fb.control('firstname'))
     })
     
     this.filterForm = this._fb.group(form)
@@ -87,11 +83,8 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
     this.addFilterForm.patchValue({ col: this.getColumns()[0] })
 
-
-    // let idArray = <FormArray>this.filterForm.get('id')
-    // console.log('idArray', idArray)
-    console.log('new filterStore', filterStore)
-    console.log('filterFormValue', this.filterForm.value)
+    // console.log('new filterStore', filterStore)
+    // console.log('filterFormValue', this.filterForm.value)
 
     this.filterForm.valueChanges
     .subscribe({
@@ -335,7 +328,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   toggleFilter() {
     this.showFilter = !this.showFilter
-    console.log('addFilter')
+
   }
 
   open() {
