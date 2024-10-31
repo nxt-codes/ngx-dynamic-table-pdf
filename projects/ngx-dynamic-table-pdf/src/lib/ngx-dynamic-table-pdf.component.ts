@@ -12,6 +12,7 @@ import { rangeFill } from './utils';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'ngx-dynamic-table-pdf',
@@ -48,15 +49,17 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   // filter
   showFilter: boolean = false
-  addFilterForm!: FormGroup
+  // addFilterForm!: FormGroup
   filterForm!: FormGroup
 
   constructor(private _fb: FormBuilder) {
     this.pdfMake = pdfMake
     this.dataSource = new MatTableDataSource([])
 
-    this.addFilterForm = this._fb.group({
-      col: ['']
+    this.filterForm = this._fb.group({
+      filter_col: [''],
+      filter_content: [''],
+      filter_kind: ['']
     })
   }
 
@@ -71,6 +74,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     let filterStore: { [key: string]: FormArray } = {}
 
     let columns = this.getColumns()
+    form = Object.assign({ filter_col: columns[0], filter_kind: '', filter_content: '' })
     columns.forEach((item: any) => {
       form = Object.assign(form, { [item]: this._fb.array([])})
     })
@@ -81,10 +85,10 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
       filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get(item)})
     })
 
-    this.addFilterForm.patchValue({ col: this.getColumns()[0] })
+    // this.filterForm.patchValue({ col: this.getColumns()[0] })
 
     // console.log('new filterStore', filterStore)
-    // console.log('filterFormValue', this.filterForm.value)
+    console.log('filterFormValue', this.filterForm.value)
 
     this.filterForm.valueChanges
     .subscribe({
@@ -103,6 +107,13 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   getColumns(): string[] {
     return Object.keys(this.data[0])
+  }
+  getContentOf(column: string): string[] {
+    let content = this.data.map((item: any) => item[column])
+    return content
+  }
+  delete() {
+    this.filterForm.patchValue({ filter_content: '' })
   }
 
 

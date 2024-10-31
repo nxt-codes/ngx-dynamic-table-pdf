@@ -83,3 +83,79 @@
         
 body
     @apply bg-secondary text-dark
+
+// label
+@mixin nxt_label
+    @apply text-label
+
+@mixin nxt_input
+    @apply bg-input text-darker disabled:text-disabled placeholder:text-placeholder
+
+    
+// select dropdown text and check-icon color
+.mdc-list-item--selected .mdc-list-item__primary-text
+    @apply text-blue-500 #{!important}
+    
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after
+    @apply text-blue-500 #{!important}
+
+// select
+.nxt_select
+    .nxt_select_label
+        @include nxt_label
+        @apply select-none
+
+    .nxt_select_input
+        @include nxt_input
+        @apply focus:border-light border-borderline
+
+    .nxt_select_search
+        @apply bg-secondary text-icon
+
+        .nxt_select_search_input
+            @apply bg-secondary text-dark
+
+    .nxt_select_button
+        @apply bg-input text-darker border border-borderline disabled:text-disabled 
+
+    .nxt_select_options
+        @apply bg-tertiary text-dark
+
+        .nxt-select-seperator
+            @apply border-t border-borderline
+
+    .nxt_select_option
+        @apply hover:bg-secondary
+
+    .mat-mdc-select-trigger
+        @apply px-3
+
+    .mat-mdc-select-arrow svg
+        @apply fill-icon
+
+.mat-mdc-select-panel
+    @apply bg-tertiary #{!important}
+
+    .mat-mdc-option
+        &:hover
+            @apply bg-secondary #{!important}
+
+        &.mat-mdc-option-active
+            @apply bg-secondary #{!important}
+
+        .mdc-list-item
+            @apply bg-secondary text-icon
+
+        .mat-mdc-focus-indicator
+            // @apply bg-red-200
+
+// select dropdown text and check-icon color
+.mdc-list-item .mdc-list-item__primary-text
+    @apply text-dark
+
+// hover and selected color
+.mdc-list-item--selected .mdc-list-item__primary-text
+    @apply text-blue-500 #{!important}
+    
+.mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after
+    @apply text-blue-500 #{!important}

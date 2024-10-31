@@ -20,26 +20,62 @@
         </header>
         <div class="mx-4 mt-8 flex-1">
             <h2 class="my-2 text-lg">Filter:</h2>
+            <!-- <form [formGroup]="filterForm">
+                
+            </form> -->
             <form [formGroup]="filterForm">
+                <div class="relative flex flex-row-reverse min-w-12 min-h-12 p-1 items-center bg-white rounded-lg cursor-pointer transition-all duration-300 ease-out" [ngClass]="showFilter ? 'w-full' : 'w-10'">
+                    <div *ngIf="!showFilter" class="relative right-0 w-10 h-10" (click)="toggleFilter()">
+                        <table-icons name="add"></table-icons>
+                    </div>
+                    <div *ngIf="showFilter" class="grow flex flex-col p-2 w-full duration-300">
+                        <div class="nxt_select w-full">
+                            <label class="nxt_select_label my-2 mr-3 text-sm leading-none">Spalte</label>
+                            <mat-select formControlName="filter_col" id="filter_col" class="nxt_select_input" [(value)]="getColumns()[0]">
+                                <mat-option *ngFor="let option of getColumns()" [value]="option">{{ option }}</mat-option>
+                            </mat-select>
+                        </div>
+                        <div class="nxt_select w-full">
+                            <label class="nxt_select_label my-2 mr-3 text-sm leading-none">Art</label>
+                            <mat-select formControlName="filter_kind" id="filter_kind" class="nxt_select_input" [(value)]="getColumns()[0]">
+                                <mat-option *ngFor="let option of ['Auswahl', 'Freitext']" [value]="option">{{ option }}</mat-option>
+                            </mat-select>
+                        </div>
+                        <ng-container *ngIf="filterForm.get('filter_kind')?.value == 'Auswahl'">
+                            <div class="nxt_select w-full">
+                                <label class="nxt_select_label my-2 mr-3 text-sm leading-none">Inhalt</label>
+                                <mat-select formControlName="filter_content" id="filter_content" class="nxt_select_input">
+                                    <mat-option *ngFor="let option of getContentOf(filterForm.get('filter_col')?.value)" [value]="option">{{ option }}</mat-option>
+                                </mat-select>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="filterForm.get('filter_kind')?.value == 'Freitext'">
+                            <div class="nxt_input flex flex-col w-full mt-2">
+                                <label class="nxt_input_label my-2 text-sm leading-none">Inhalt</label>
+                                <div class="relative mt-1 flex items-center">
+                                    <input type="text" formControlName="filter_content" id="filter_content" class="nxt_input_field w-full p-3 border rounded focus:outline-none text-sm font-medium leading-none disabled:pointer-events-none" />
+                                    <div class="nxt_input_action_icon absolute h-full flex flex-row right-0 items-center justify-center">
+                                        <div class="grid h-8 w-8 stroke-2 place-items-center cursor-pointer" (click)="delete()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div class="inline-flex h-12 w-full mt-2 p-2 items-center justify-between text-white bg-accent rounded" (click)="toggleFilter()">
+                            <span>Filter hinzufügen</span>
+                            <div class="h-10 w-10">
+                                <table-icons name="add"></table-icons>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div *ngFor="let col of getColumns()" [formArrayName]="col">
                     <div *ngFor="let row; let index = index" formGroupName="0">
                         <input formControlName="filter">
                     </div>
                 </div>
             </form>
-            <form [formGroup]="addFilterForm">
-                <div class="relative flex flex-row-reverse min-w-12 h-12 p-1 items-center bg-white rounded-lg cursor-pointer transition-all duration-300 ease-out" [ngClass]="showFilter ? 'w-full' : 'w-10'">
-                    <div class="relative right-0 w-10 h-10" (click)="toggleFilter()">
-                        <table-icons name="add"></table-icons>
-                    </div>
-                    <div *ngIf="showFilter" class="grow p-2 border-r border-gray-500 duration-300">
-                        <mat-select formControlName="col" id="col" class="nxt_select_input" [(value)]="getColumns()[0]">
-                            <mat-option *ngFor="let option of getColumns()" [value]="option">{{ option }}</mat-option>
-                        </mat-select>
-                    </div>
-                </div>
-            </form>
-            {{ getColumns()[0] }}
 
             <h2 class="my-2 text-lg">Spalten auswählen:</h2>
             <table mat-table [dataSource]="dataSource" matSort>

@@ -122,3 +122,29 @@ input[type="color"]
 
 .wrapper:hover .close 
     transform: rotate(-45deg)
+
+input, textarea
+    @apply ring-0 ring-offset-0 outline-none
+
+// label
+@mixin nxt_label
+    @apply text-label
+
+@mixin nxt_input
+    @apply bg-input text-darker disabled:text-disabled placeholder:text-placeholder
+
+.nxt_select
+    display: flex
+    flex-direction: column
+    width: 100%
+    margin-top: 0.25rem
+
+    .nxt_select_input
+        @apply border rounded text-sm font-normal focus:border-static_gray border-borderline
+        position: relative
+        width: 100%
+        margin-top: 0.24rem
+        padding: 0.5rem 0
+
+        &:focus
+            outline: none
