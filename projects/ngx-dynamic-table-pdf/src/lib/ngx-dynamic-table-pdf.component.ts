@@ -103,7 +103,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   }
   getContentOf(column: string): string[] {
     let content = this.data.map((item: any) => item[column])
-    return content
+    return <string[]>[...new Set(content)]
   }
   getFilterForm() {
     return Object.keys(this.filterForm.controls).filter((item: string) => {
@@ -133,9 +133,13 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
       let row: any[] = []
       let filter = this._filter.getValue()
 
+      if (filter.length == 0) {
+        col.forEach((c: any) => {
+          row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+        })
+      }
       filter.forEach((f: any) => {
         let index = col_name.indexOf(f.col)
-        console.warn('index', item, item[f.col])
         if (index >= 0) {
           switch (true) {
             case f.operation == '=':
