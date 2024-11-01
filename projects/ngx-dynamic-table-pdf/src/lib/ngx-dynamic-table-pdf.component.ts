@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { TableIconsComponent } from './components/icons/table-icons.component';
 import { MatMenuModule } from '@angular/material/menu';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor } from '@angular/common';
 import { ClickStopPropagationDirective } from './directives/click-stop-propagation/click-stop-propagation.directive';
 import { DrawerComponent } from './components/drawer/components/drawer/drawer.component';
 
@@ -12,7 +12,7 @@ import { rangeFill } from './utils';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { BehaviorSubject, filter, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'ngx-dynamic-table-pdf',
@@ -26,6 +26,7 @@ import { BehaviorSubject, filter, Observable, take } from 'rxjs';
     MatSelectModule,
     MatSortModule,
     MatTableModule,
+    NgFor,
     ReactiveFormsModule,
     TableIconsComponent
   ],

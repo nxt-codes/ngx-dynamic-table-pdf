@@ -32,6 +32,14 @@
                             <table-icons class="stroke-2 stroke-current" name="cancel"></table-icons>
                         </div>
                     </div>
+                    <!-- <ng-template #noFilter> -->
+                        <div *ngIf="(filter$ | async)?.length == 0" class="text-center">
+                            <span>Keine Filter vorhanden</span>
+                        </div>
+                        <!-- <div class="absolute flex h-12 w-full justify-center inset-0 text-gray-400"> -->
+                            
+                        <!-- </div> -->
+                    <!-- </ng-template> -->
                     <div *ngIf="showFilter" class="grow flex flex-col p-2 w-full duration-300">
                         <hr>
                         <div class="nxt_select w-full">
@@ -75,7 +83,7 @@
                         </ng-container>
                     </div>
                 </div>
-                <div class="inline-flex divide-x h-12 w-full p-2 items-center justify-between text-white bg-gray-800 rounded-b-lg">
+                <div class="inline-flex divide-x h-12 w-full p-2 items-center justify-between text-white bg-gray-800 rounded-b-lg cursor-pointer">
                     <div class="inline-flex w-full pr-1 items-center justify-between" (click)="showFilter ? addFilter() : toggleFilter()">
                         <span>Filter hinzufügen</span>
                         <div class="h-10 w-10">
@@ -164,7 +172,7 @@
                 <tr mat-row *matRowDef="let row; columns: ['checkbox', 'name', 'color', 'sort'];" class="group"></tr>
             </table>
         </div>
-        <footer class="flex flex-none h-16 w-full py-2 px-4 justify-between bg-secondary border-t border-borderline">
+        <footer class="fixed bottom-0 flex flex-none h-16 w-full py-2 px-4 justify-between bg-secondary border-t border-borderline">
             <ng-container *ngTemplateOutlet="toolbar"></ng-container>
         </footer>
     </div>
