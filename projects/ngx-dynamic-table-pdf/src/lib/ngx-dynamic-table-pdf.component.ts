@@ -34,8 +34,7 @@ import { BehaviorSubject, filter, Observable, take } from 'rxjs';
 })
 export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   @Input() data: any = []
-  
-  // items: any = ['id', 'name', 'date', 'ort', 'checked', 'description']
+
   columns: any[] = []
   prepared: any
 
@@ -49,11 +48,12 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   // filter
   showFilter: boolean = false
-  // addFilterForm!: FormGroup
   filterForm!: FormGroup
+
+  operations = [{ label: 'gleich', value: '=' }, { label: 'ungleich', value: '!=' }, { label: 'größer', value: '>' }, { label: 'kleiner', value: '<' }, { label: 'größer gleich', value: '>=' }, { label: 'kleiner gleich', value: '<=' }, { label: 'enthält', value: 'contains' }, { label: 'enthält nicht', value: 'not contains' }, { label: 'beginnt mit', value: 'starts with' }, { label: 'endet mit', value: 'ends with' }]
   
-  private readonly _filter = new BehaviorSubject<{ id: string, col: string, op: string, content: string, takeAccount: boolean }[]>([])
-  filter$: Observable<{ id: string, col: string, op: string, content: string, takeAccount: boolean }[]> = this._filter.asObservable()
+  private readonly _filter = new BehaviorSubject<{ id: string, col: string, operation: string, content: string, takeAccount: boolean }[]>([])
+  filter$: Observable<{ id: string, col: string, operation: string, content: string, takeAccount: boolean }[]> = this._filter.asObservable()
 
   constructor(private _fb: FormBuilder) {
     this.pdfMake = pdfMake
@@ -73,35 +73,25 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     this.dataSource.data = this.createData(this.columns)
 
     // filter
-    let form: any = {} // Obj
-    // let filterStore: { [key: string]: FormArray } = {}
+    let form: any = {}
 
     let columns = this.getColumns()
-    form = Object.assign({ filter_col: columns[0], filter_kind: '', filter_content: '' })
+    form = Object.assign({ filter_col: columns[0], filter_operation: '', filter_kind: '', filter_content: '' })
     columns.forEach((item: any) => {
       form = Object.assign(form, { [item]: this._fb.array([])})
     })
     
     this.filterForm = this._fb.group(form)
 
-    // columns.forEach((item: any) => {
-    //   filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get(item)})
+    // this.filterForm.valueChanges
+    // .subscribe({
+    //   next: (data) => {
+    //     console.log('formdata', data)
+    //   },
+    //   complete: () => {
+    //     console.log('complete')
+    //   }
     // })
-
-    // this.filterForm.patchValue({ col: this.getColumns()[0] })
-
-    // console.log('new filterStore', filterStore)
-    console.log('filterFormValue', this.filterForm.value)
-
-    this.filterForm.valueChanges
-    .subscribe({
-      next: (data) => {
-        console.log('formdata', data)
-      },
-      complete: () => {
-        console.log('complete')
-      }
-    })
   }
 
   ngAfterViewInit(): void {
@@ -147,9 +137,15 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
         let index = col_name.indexOf(f.col)
         if (index >= 0) {
           switch (true) {
-            case f.op == '=':
-              console.warn('item', item.name, f.content)
+            case f.operation == '=':
               if (item.name == f.content) {
+                col.forEach((c: any) => {
+                  row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+                })
+              }
+              break
+            case f.operation == '!=':
+              if (item.name != f.content) {
                 col.forEach((c: any) => {
                   row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
                 })
@@ -363,7 +359,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     let columns = this.getColumns()
 
     let temp = this._filter.getValue()
-    this._filter.next([...temp, { id: this.generateGUID(), col: this.filterForm.get('filter_col')?.value, op: '=', content: this.filterForm.get('filter_content')?.value, takeAccount: true }])
+    this._filter.next([...temp, { id: this.generateGUID(), col: this.filterForm.get('filter_col')?.value, operation: this.filterForm.get('filter_operation')?.value, content: this.filterForm.get('filter_content')?.value, takeAccount: true }])
     
     this.filterForm.patchValue({ filter_col: columns[0], filter_kind: '', filter_content: '' })
   }

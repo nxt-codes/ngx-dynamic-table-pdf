@@ -25,7 +25,7 @@
                     <div class="flex px-2 items-center justify-between w-full" *ngFor="let filter of (filter$ | async)">
                         <div [ngClass]="{'line-through': !filter.takeAccount}">
                             <span class="text-dark"> {{ filter.col }} </span>
-                            <span class="text-dark"> {{ filter.op }} </span>
+                            <span class="text-dark"> {{ filter.operation }} </span>
                             <span class="text-dark"> {{ filter.content }} </span>
                         </div>
                         <div class="w-6 h-6 cursor-pointer" (click)="deleteFilter(filter.id)">
@@ -38,6 +38,12 @@
                             <label class="nxt_select_label my-2 mr-3 text-sm leading-none">Spalte</label>
                             <mat-select formControlName="filter_col" id="filter_col" class="nxt_select_input" [(value)]="getColumns()[0]">
                                 <mat-option *ngFor="let option of getColumns()" [value]="option">{{ option }}</mat-option>
+                            </mat-select>
+                        </div>
+                        <div class="nxt_select w-full">
+                            <label class="nxt_select_label my-2 mr-3 text-sm leading-none">Operation</label>
+                            <mat-select formControlName="filter_operation" id="filter_operation" class="nxt_select_input">
+                                <mat-option *ngFor="let option of operations" [value]="option.value">{{ option.label }}</mat-option>
                             </mat-select>
                         </div>
                         <div class="nxt_select w-full">
