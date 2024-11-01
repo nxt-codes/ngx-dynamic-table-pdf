@@ -135,17 +135,25 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
       filter.forEach((f: any) => {
         let index = col_name.indexOf(f.col)
+        console.warn('index', item, item[f.col])
         if (index >= 0) {
           switch (true) {
             case f.operation == '=':
-              if (item.name == f.content) {
+              if (item[f.col] == f.content) {
                 col.forEach((c: any) => {
                   row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
                 })
               }
               break
             case f.operation == '!=':
-              if (item.name != f.content) {
+              if (item[f.col] != f.content) {
+                col.forEach((c: any) => {
+                  row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+                })
+              }
+              break
+            case f.operation == '>=':
+              if (item[f.col] >= f.content) {
                 col.forEach((c: any) => {
                   row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
                 })
