@@ -12,7 +12,7 @@ import { rangeFill } from './utils';
 import { MatSortModule, MatSort } from '@angular/material/sort';
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { filter } from 'rxjs';
+import { BehaviorSubject, filter, Observable, take } from 'rxjs';
 
 @Component({
   selector: 'ngx-dynamic-table-pdf',
@@ -51,6 +51,9 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   showFilter: boolean = false
   // addFilterForm!: FormGroup
   filterForm!: FormGroup
+  
+  private readonly _filter = new BehaviorSubject<{ id: string, col: string, op: string, content: string}[]>([])
+  filter$: Observable<{ id: string, col: string, op: string, content: string}[]> = this._filter.asObservable()
 
   constructor(private _fb: FormBuilder) {
     this.pdfMake = pdfMake
@@ -71,7 +74,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
     // filter
     let form: any = {} // Obj
-    let filterStore: { [key: string]: FormArray } = {}
+    // let filterStore: { [key: string]: FormArray } = {}
 
     let columns = this.getColumns()
     form = Object.assign({ filter_col: columns[0], filter_kind: '', filter_content: '' })
@@ -81,9 +84,9 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     
     this.filterForm = this._fb.group(form)
 
-    columns.forEach((item: any) => {
-      filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get(item)})
-    })
+    // columns.forEach((item: any) => {
+    //   filterStore = Object.assign(filterStore, { [item]: <FormArray>this.filterForm.get(item)})
+    // })
 
     // this.filterForm.patchValue({ col: this.getColumns()[0] })
 
@@ -111,6 +114,11 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   getContentOf(column: string): string[] {
     let content = this.data.map((item: any) => item[column])
     return content
+  }
+  getFilterForm() {
+    return Object.keys(this.filterForm.controls).filter((item: string) => {
+      return (this.filterForm.get(item) instanceof FormArray && (<FormArray>this.filterForm.get(item)).length > 0)
+    })
   }
   delete() {
     this.filterForm.patchValue({ filter_content: '' })
@@ -339,7 +347,17 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
   toggleFilter() {
     this.showFilter = !this.showFilter
+  }
+  addFilter() {
+    let columns = this.getColumns()
 
+    let temp = this._filter.getValue()
+    this._filter.next([...temp, { id: this.generateGUID(), col: this.filterForm.get('filter_col')?.value, op: '=', content: this.filterForm.get('filter_content')?.value }])
+    
+    this.filterForm.patchValue({ filter_col: columns[0], filter_kind: '', filter_content: '' })
+  }
+  deleteFilter(id: string) {
+    this._filter.next(this._filter.getValue().filter((item: any) => item.id != id))
   }
 
   open() {
