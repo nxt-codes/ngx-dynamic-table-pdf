@@ -52,8 +52,8 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   // addFilterForm!: FormGroup
   filterForm!: FormGroup
   
-  private readonly _filter = new BehaviorSubject<{ id: string, col: string, op: string, content: string}[]>([])
-  filter$: Observable<{ id: string, col: string, op: string, content: string}[]> = this._filter.asObservable()
+  private readonly _filter = new BehaviorSubject<{ id: string, col: string, op: string, content: string, takeAccount: boolean }[]>([])
+  filter$: Observable<{ id: string, col: string, op: string, content: string, takeAccount: boolean }[]> = this._filter.asObservable()
 
   constructor(private _fb: FormBuilder) {
     this.pdfMake = pdfMake
@@ -126,15 +126,10 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
 
   prepareTable(): any {
-    // console.log('prepare', this.dataSource.data)
+    console.log('prepare', this.dataSource.data)
     let col: any[] = this.dataSource.data.filter((item: any) => item.checked)
     let col_name: string[] = col.map((item: any) => item.name)
-    // console.log('col', col.map((item: any) => item.name))
-    // let col_header: string[] = this.dataSource.data.map((item: any) => {
-    //   if (item.checked) return item.name
-    // }).filter((item: any) => item !== undefined)
-    
-    // let col_header = Object.keys(this.data[0])
+
     let width = rangeFill(col_name.length, '*')
     console.log('header', col_name)
     let table_header = col_name.map((c: string) => {
@@ -144,12 +139,28 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
     let rows: any[] = []
     this.data.forEach((item: any) => {
-      console.log('item', item)
+      // console.log('item', item)
       let row: any[] = []
-      col.forEach((c: any) => {
-        row.push({ text: item[c.name], style: 'tableRow', color: c.color })
+      let filter = this._filter.getValue()
+
+      filter.forEach((f: any) => {
+        let index = col_name.indexOf(f.col)
+        if (index >= 0) {
+          switch (true) {
+            case f.op == '=':
+              console.warn('item', item.name, f.content)
+              if (item.name == f.content) {
+                col.forEach((c: any) => {
+                  row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+                })
+              }
+              break
+            default:
+              break
+          }
+        }
       })
-      rows.push(row)
+      if (row.length > 0) rows.push(row)
     })
     
     return {
@@ -352,7 +363,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     let columns = this.getColumns()
 
     let temp = this._filter.getValue()
-    this._filter.next([...temp, { id: this.generateGUID(), col: this.filterForm.get('filter_col')?.value, op: '=', content: this.filterForm.get('filter_content')?.value }])
+    this._filter.next([...temp, { id: this.generateGUID(), col: this.filterForm.get('filter_col')?.value, op: '=', content: this.filterForm.get('filter_content')?.value, takeAccount: true }])
     
     this.filterForm.patchValue({ filter_col: columns[0], filter_kind: '', filter_content: '' })
   }

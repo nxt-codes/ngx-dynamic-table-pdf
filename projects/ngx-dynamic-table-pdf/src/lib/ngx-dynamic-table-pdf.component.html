@@ -23,7 +23,7 @@
             <form [formGroup]="filterForm">
                 <div class="relative flex flex-col p-2 bg-white rounded-t-lg transition-all duration-300 ease-out">
                     <div class="flex px-2 items-center justify-between w-full" *ngFor="let filter of (filter$ | async)">
-                        <div>
+                        <div [ngClass]="{'line-through': !filter.takeAccount}">
                             <span class="text-dark"> {{ filter.col }} </span>
                             <span class="text-dark"> {{ filter.op }} </span>
                             <span class="text-dark"> {{ filter.content }} </span>
