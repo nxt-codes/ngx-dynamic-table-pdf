@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "ngx:build": "ng build ngx-dynamic-table-pdf",
-    "ngx:publish": "cd dist/ngx-dynamic-table-pdf && npm publish --access public"
+    "ngx:publish": "cd dist/ngx-dynamic-table-pdf && npm publish --access public",
+    "demo:publish": "ng deploy --repo=https://github.com/nxt-codes/ngx-dynamic-table-pdf.git"
   },
   "private": false,
   "dependencies": {
