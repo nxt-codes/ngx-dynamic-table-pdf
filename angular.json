@@ -30,6 +30,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
+              "./node_modules/@christophhu/ngx-dynamic-table/lib/style/ngx-dynamic-table.scss",
               "projects/demo/src/custom-theme.scss",
               "projects/demo/src/styles.sass"
             ],

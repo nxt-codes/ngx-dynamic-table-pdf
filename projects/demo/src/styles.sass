@@ -159,3 +159,102 @@ body
     
 .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after
     @apply text-blue-500 #{!important}
+
+
+// table
+*
+    @apply ring-0 ring-offset-0 outline-none
+
+.mat-column-unread
+    @apply w-4 p-0 justify-center
+
+.mat-column-sortrow
+    @apply h-full w-0 p-0 justify-center
+
+.mat-column-count
+    @apply w-16 pr-4 justify-center bg-white
+
+.mat-column-actions
+    @apply w-20 justify-center
+
+    button
+        @apply mx-auto
+
+.mat-column-expand
+    @apply w-16 justify-center
+
+    button
+        @apply mx-auto
+
+
+.mat-mdc-table
+    @apply bg-transparent #{!important}
+
+.mat-mdc-header-row
+    @apply bg-tertiary text-darker #{!important}
+
+.mat-mdc-header-cell
+    @apply border-none border-b border-2 border-borderline #{!important}
+
+.mat-column-checkbox
+    @apply m-0 p-0 w-8 #{!important}
+
+.mat-column-count
+    @apply bg-transparent #{!important}
+
+.mat-mdc-row
+    @apply bg-tertiary text-dark #{!important}
+
+.mat-mdc-cell
+    @apply border-t border-light #{!important}
+    
+// bubble-pagination
+.nxt-bubble-container
+    @apply flex
+
+.nxt-bubble
+    @apply flex h-16 w-16 items-center justify-center bg-static_gray text-darker rounded-full cursor-pointer transition duration-300
+
+.nxt-bubble:hover
+    @apply bg-dark text-darker
+
+.nxt-bubble__active
+    @apply bg-dark text-darker
+
+.nxt-bubble__disabled
+    @apply bg-disabled text-darker cursor-default pointer-events-none
+
+/* TODO(mdc-migration): The following rule targets internal classes of paginator that may no longer apply for the MDC version. */
+mat-paginator
+    @apply bg-transparent #{!important}
+
+.mat-mdc-paginator-range-actions
+    margin-right: 12px !important
+
+.mat-mdc-paginator-range-label
+    @apply text-lg text-dark #{!important}
+
+.paginator
+    @apply text-lg
+
+.paginator .ngx-pagination .current
+    background: rgb(131, 131, 131)
+    border-radius: 4px
+    padding-left: 9px
+    padding-right: 9px
+
+.paginator .ngx-pagination a:hover, .ngx-pagination button:hover
+    // background: #d4d4d4
+    // border-radius: 3px
+    // padding-left: 9px
+    // padding-right: 9px
+    // text-decoration: none
+
+.paginator .ngx-pagination a:focus, .ngx-pagination button:focus
+    // outline: none
+    // background: #d4d4d4
+
+
+// expandable
+tr.example-detail-row
+  height: 0

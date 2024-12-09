@@ -1,9 +1,9 @@
-<button class="w-12 h-12 p-2 m-2 bg-primary text-dark rounded-lg" (click)="settingsDrawer.toggle()">
+<button class="w-12 h-12 p-2 m-2 bg-secondary text-dark rounded-lg" (click)="settingsDrawer.toggle()">
     <table-icons class="w-8 h-8 stroke-1 stroke-current" name="pdf-document"></table-icons>
 </button>
 
 <drawer class="w-screen min-w-screen sm:w-96 sm:min-w-96 z-110" fixed [mode]="'over'" [name]="'pdfPrint'" [position]="'right'" #settingsDrawer>
-    <div class="flex flex-col w-full overflow-auto bg-primary border-l border-borderline">
+    <div class="flex flex-col w-full overflow-auto bg-secondary border-l border-borderline">
         <header class="h-16 mx-4 flex items-center justify-between content-center border-b border-borderline text-dark">
             <!-- <button class="sm:w-0 w-8 h-8 focus:outline-none cursor-pointer" (click)="settingsDrawer.close()">
                 <icons class="stroke-1 stroke-current" name="arrow-left"></icons>
@@ -21,7 +21,7 @@
         <div class="mx-4 mt-8 flex-1">
             <h2 class="my-2 text-lg">Filter:</h2>
             <form [formGroup]="filterForm">
-                <div class="relative flex flex-col p-2 bg-white rounded-t-lg transition-all duration-300 ease-out">
+                <div class="relative flex flex-col p-2 bg-tertiary rounded-t-lg transition-all duration-300 ease-out">
                     <div class="flex px-2 items-center justify-between w-full" *ngFor="let filter of (filter$ | async)">
                         <div [ngClass]="{'line-through': !filter.takeAccount}">
                             <span class="text-dark"> {{ filter.col }} </span>
@@ -142,7 +142,7 @@
                         </div>
                     </span></th>
                     <td mat-cell *matCellDef="let element">
-                        <input type="text" [value]="element.name" class="w-full py-1 rounded focus:outline-none focus:bg-gray-100 focus:shadow-inner text-sm font-medium leading-none disabled:pointer-events-none" />
+                        <input type="text" [value]="element.name" class="w-full py-1 rounded bg-tertiary focus:outline-none focus:bg-secondary focus:shadow-inner text-sm font-medium leading-none disabled:pointer-events-none" />
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="color">
