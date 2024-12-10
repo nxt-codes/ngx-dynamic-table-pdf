@@ -1,6 +1,6 @@
 {
   "name": "@nxt-codes/ngx-dynamic-table-pdf",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Adds a pdf-print-button to a ngx-dynamic-table.",
   "license": "MIT",
   "author": {
