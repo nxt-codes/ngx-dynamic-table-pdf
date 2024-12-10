@@ -84,6 +84,16 @@
 body
     @apply bg-secondary text-dark
 
+.scrollbar-hide
+    -ms-overflow-style: none
+    scrollbar-width: none
+    overflow-y: scroll
+
+    &::-webkit-scrollbar
+        display: none
+        width: 0
+        height: 0
+
 // label
 @mixin nxt_label
     @apply text-label

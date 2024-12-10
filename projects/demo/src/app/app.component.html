@@ -81,7 +81,7 @@
       <div class="relative flex-auto w-full overflow-y-auto scrollbar-hide">
         @defer (when isVisible; prefetch on timer(1000ms)) {
           <div class="bg-tertiary">
-            <dynamic-table [tableoptions]="tableoptions" [data$]="data$" [pageSize]="4" [isEditableInTable]="false"></dynamic-table>
+            <dynamic-table [tableoptions]="tableoptions" [data$]="getData()" [pageSize]="4" [isEditableInTable]="false"></dynamic-table>
           </div>
         }
         @placeholder (minimum 100ms) {

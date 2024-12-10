@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TableIconsComponent } from './components/icons/table-icons.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule, NgFor } from '@angular/common';
@@ -33,7 +33,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   templateUrl: './ngx-dynamic-table-pdf.component.html',
   styleUrls: ['./ngx-dynamic-table-pdf.component.sass']
 })
-export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
+export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() data: any = []
 
   columns: any[] = []
@@ -67,8 +67,13 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
     })
   }
 
+  ngOnDestroy(): void {
+    this._filter.complete()
+  }
+
   ngOnInit(): void {
     this.pdfMake.vfs = pdfFonts.pdfMake.vfs
+    if (this.data.length == 0) return
     this.columns = Object.keys(this.data[0])
     
     this.dataSource.data = this.createData(this.columns)
@@ -100,6 +105,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   }
 
   getColumns(): string[] {
+    if (this.data.length == 0) return []
     return Object.keys(this.data[0])
   }
   getContentOf(column: string): string[] {
@@ -117,16 +123,13 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
 
 
   prepareTable(): any {
-    console.log('prepare', this.dataSource.data)
     let col: any[] = this.dataSource.data.filter((item: any) => item.checked)
     let col_name: string[] = col.map((item: any) => item.name)
 
     let width = rangeFill(col_name.length, '*')
-    console.log('header', col_name)
     let table_header = col_name.map((c: string) => {
       return { text: c, style: 'tableHeader' }
     })
-    console.log('header', table_header)
 
     let rows: any[] = []
     this.data.forEach((item: any) => {
@@ -157,8 +160,29 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
                 })
               }
               break
+            case f.operation == '>':
+              if (item[f.col] > f.content) {
+                col.forEach((c: any) => {
+                  row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+                })
+              }
+              break
             case f.operation == '>=':
               if (item[f.col] >= f.content) {
+                col.forEach((c: any) => {
+                  row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+                })
+              }
+              break
+            case f.operation == '<=':
+              if (item[f.col] <= f.content) {
+                col.forEach((c: any) => {
+                  row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
+                })
+              }
+              break
+            case f.operation == '<':
+              if (item[f.col] < f.content) {
                 col.forEach((c: any) => {
                   row.push({ text: item[c.name], style: 'tableRow', color: c.color }) 
                 })
@@ -189,7 +213,7 @@ export class NgxDynamicTablePdfComponent implements OnInit, AfterViewInit {
   createPdf(): any {
     let prepare: any = {
       table: {},
-      watermark: 'Entwurf',
+      // watermark: 'Entwurf',
     }
 
     prepare.table = this.prepareTable()
